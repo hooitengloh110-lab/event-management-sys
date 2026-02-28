@@ -18,6 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
+        // dd(Route::has('password.request'));
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
@@ -29,11 +30,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // dd($request);
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // return redirect()->intended(route('dashboard', absolute: false));
+        $role = $request->user()->role;
+        // dd($role);
+
+        return match ($role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'organiser' => redirect()->route('organiser.dashboard'),
+            'attendee' => redirect()->route('attendee.dashboard'),
+            default => redirect()->route('dashboard'),
+        };
     }
 
     /**
@@ -41,6 +52,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // dd($request->session(),$request->user());
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

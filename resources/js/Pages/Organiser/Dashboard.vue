@@ -11,7 +11,7 @@ import { Head } from '@inertiajs/vue3';
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
-                Dashboard
+                Organiser Dashboard
             </h2>
         </template>
 
@@ -28,15 +28,3 @@ import { Head } from '@inertiajs/vue3';
         </div>
     </AuthenticatedLayout>
 </template>
-
-
-<!-- <script setup lang="ts">
-import { Button } from '@/Components/ui/button'
-</script>
-
-<template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-    <Button >Click Me</Button>
-  </div>
-</template> -->

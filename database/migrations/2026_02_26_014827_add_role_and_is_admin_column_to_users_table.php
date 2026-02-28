@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyText('role');
+            $table->enum('role', ['admin', 'organiser', 'attendee'])
+                  ->default('attendee');
             $table->boolean('is_admin')->default(false);
         });
     }
