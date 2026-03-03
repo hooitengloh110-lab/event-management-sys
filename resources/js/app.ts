@@ -1,11 +1,8 @@
 import '../css/app.css';
-
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
-import DashboardLayout from './Layouts/DashboardLayout.vue';
-import MainLayout from './Layouts/MainLayout.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -39,7 +36,7 @@ createInertiaApp({
         //         page.default.layout = MainLayout;
         //     }
         // }
-        console.log("Check : ", name, page, Object.keys(pages));
+        // console.log("Check : ", name, page, Object.keys(pages));
 
         return page;
     },

@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EventImage extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $fillable = ['filename','is_cover'];
+    protected $fillable = ['filename'];
     protected $appends = ['src'];
 
     public function event(): BelongsTo

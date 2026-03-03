@@ -50,6 +50,8 @@ const flashSuccess = computed(() => page.props.flash.success)
                                     Dashboard
                                 </NavLink>
                             </div>
+                                
+                            
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">

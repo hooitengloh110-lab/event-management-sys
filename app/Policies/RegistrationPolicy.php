@@ -13,7 +13,7 @@ class RegistrationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class RegistrationPolicy
      */
     public function view(User $user, Registration $registration): bool
     {
-        return false;
+        return $registration->event->organiser_id === $user->id || $registration->attendee_id;
     }
 
     /**
@@ -37,12 +37,12 @@ class RegistrationPolicy
      */
     public function update(User $user, Registration $registration): bool
     {
-        return false;
+        return $registration->event->organiser_id === $user->id;
     }
 
     public function cancel(User $user, Registration $registration): bool
     {
-        return $user->role === 'admin' || $user->id === $registration->attendee_id;
+        return $registration->event->organiser_id === $user->id;
     }
 
     /**

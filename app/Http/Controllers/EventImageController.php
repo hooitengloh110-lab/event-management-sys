@@ -2,64 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\EventImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class EventImageController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event)
     {
-        //
+      $event->load(['images']);
+      return Inertia::render('Organiser/EventImage/Create',['event' => $event]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Event $event, Request $request)
     {
-        //
-    }
+      if ($request->hasFile('images') && ($event->images()->count() + count($request->file('images')) > 6)) {
+        return back()->withErrors([
+            'images' => 'Total images cannot exceed 6.',
+        ]);
+      }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EventImage $eventImage)
-    {
-        //
-    }
+      if ($request->hasFile('images')) {
+        $request->validate(
+          ['images.*' => 'mimes:jpg,png,jpeg,webp|max:5000'],
+          ['images.*.mimes' => 'The file should be in one of the formats: jpg, png, jpeg, webp']
+        );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EventImage $eventImage)
-    {
-        //
-    }
+        foreach ($request->file('images') as $file) {
+          $path = $file->store('images', 'public');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, EventImage $eventImage)
-    {
-        //
+          $event->images()->save(new EventImage([
+            'filename' => $path
+          ]));
+        }
+      }
+
+      return redirect()->back()->with('success', 'Images uploaded!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EventImage $eventImage)
+    public function destroy(Event $event, EventImage $image)
     {
-        //
+      Storage::disk('public')->delete($image->filename);
+      $image->delete();
+
+      return redirect()->back()->with('success', 'Image was deleted!');
     }
 }

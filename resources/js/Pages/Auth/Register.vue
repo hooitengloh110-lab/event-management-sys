@@ -71,7 +71,7 @@ const submit = () => {
                     Register
                 </PrimaryButton>
             </div>
-            <Button>Button</Button>
+
         </form>
     </GuestLayout>
 </template>

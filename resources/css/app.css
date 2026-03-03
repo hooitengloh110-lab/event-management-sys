@@ -66,3 +66,41 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .btn-custom {
+    @apply bg-gray-200 hover:bg-gray-100 dark:bg-gray-700
+  }
+
+  .input-error {
+    @apply text-sm text-red-500 dark:text-red-400
+  }
+
+  .btn-outline {
+    @apply p-2 rounded-md border shadow-sm border-gray-300 dark:border-gray-800 hover:border-gray-400 hover:bg-gray-50 dark:hover:border-gray-700 dark:hover:bg-gray-800
+  }
+
+  .btn-color {
+    @apply border-gray-300 dark:border-gray-800 hover:border-gray-400 hover:bg-gray-50 dark:hover:border-gray-700 dark:hover:bg-gray-800
+  }
+
+  .input-filter-l {
+    @apply placeholder:text-gray-400 dark:placeholder:text-gray-600 border border-gray-200 dark:border-gray-700 rounded-t-md rounded-l-md rounded-b-md rounded-r-none text-sm font-medium text-gray-600 dark:text-gray-400 dark:bg-gray-800
+  }
+
+  .input-filter-r {
+    @apply placeholder:text-gray-400 dark:placeholder:text-gray-600 border border-l-0 border-gray-200 dark:border-gray-700 rounded-t-md rounded-l-none rounded-b-none rounded-r-md text-sm font-medium text-gray-600 dark:text-gray-400 dark:bg-gray-800
+  }
+
+  .cancel-button {
+    @apply bg-destructive/10 text-destructive/100 shadow-sm hover:bg-destructive/90 hover:text-white/100;
+  }
+
+  .confirm-button {
+    @apply bg-green-50 text-green-900 hover:bg-green-900 hover:text-white;
+  }
+
+  .hover-confirm {
+    @apply text-white hover:bg-gray-300 hover:text-gray-900;
+  }
+}

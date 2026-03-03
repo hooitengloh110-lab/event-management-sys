@@ -32,7 +32,7 @@ class Event extends Model
     ];
 
     protected $sortable = [
-        'status',
+        'price',
         'created_at',
     ];
 
@@ -59,6 +59,34 @@ class Event extends Model
     public function scopeMostRecent(Builder $query): Builder
     {
         return $this->orderByDesc('created_at');
+    }
+
+    public function scopeEventStart(Builder $query): Builder
+    {
+        return $this->orderBy('start_datetime', 'asc');
+    }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+      return $query->when(
+        $filters['priceFrom'] ?? false,
+        fn($query, $value) => $query->where('price', '>=', $value)
+      )->when(
+        $filters['priceTo'] ?? false,
+        fn($query, $value) => $query->where('priceTo', '<=', $value)
+      )->when(
+        $filters['capacity'] ?? false,
+        fn($query, $value) => $query->where('capacity', '>=', $value)
+      )->when(
+        $filters['deleted'] ?? false,
+        fn($query, $value) => $query->withTrashed()
+      )->when(
+        $filters['by'] ?? false,
+          fn($query, $value) =>
+          !in_array($value, $this->sortable)
+            ? $query :
+            $query->orderBy($value, $filters['order'] ?? 'desc')
+      );
     }
 
 }
