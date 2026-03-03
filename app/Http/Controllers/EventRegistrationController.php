@@ -53,7 +53,7 @@ class EventRegistrationController extends Controller
 
   public function cancel(Registration $registration)
   {
-    Gate::authorize('update', $registration);
+    Gate::authorize('cancel', $registration);
 
     $registration->update([
         'status' => 'cancelled'

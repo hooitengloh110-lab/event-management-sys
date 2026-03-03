@@ -42,7 +42,7 @@ class RegistrationPolicy
 
     public function cancel(User $user, Registration $registration): bool
     {
-        return $registration->event->organiser_id === $user->id;
+        return $registration->event->organiser_id === $user->id || $registration->attendee_id === $user->id;
     }
 
     /**

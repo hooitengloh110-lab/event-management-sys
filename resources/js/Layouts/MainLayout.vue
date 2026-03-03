@@ -17,21 +17,17 @@ interface AppPageProps extends InertiaPageProps {
 }
 const page = usePage<AppPageProps>();
 const flashSuccess = computed(() => page.props.flash.success)
+const flashError = computed(() => page.props.flash.error)
 const user = computed(() => page.props.auth.user)
 const notificationCount = computed(
   () => Math.min(page.props.auth.user.notificationCount, 9),
 )
 
-// const user = computed(() => page.props.user)
-// defineProps<{
-//   title?: string
-// }>()
-
 </script>
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen">
             <nav
                 class="border-b border-gray-100 bg-white"
             >
@@ -53,10 +49,16 @@ const notificationCount = computed(
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('organiser.dashboard')"
-                                    :active="route().current('organiser.dashboard')"
+                                    :href="route('attendee.dashboard')"
+                                    :active="route().current('attendee.dashboard')"
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink
+                                    :href="route('attendee.event.index')"
+                                    :active="route().current('attendee.event.index') || route().current('attendee.event.show') || route().current('event.registration.index')"
+                                >
+                                    Event
                                 </NavLink>
                             </div>
                         </div>
@@ -166,10 +168,16 @@ const notificationCount = computed(
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('attendee.dashboard')"
+                            :active="route().current('attendee.dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('attendee.event.index')"
+                            :active="route().current('attendee.event.index') || route().current('attendee.event.show') || route().current('event.registration.index')"
+                          >
+                            Event
                         </ResponsiveNavLink>
                     </div>
 
@@ -215,9 +223,12 @@ const notificationCount = computed(
             </header>
 
             <!-- Page Content -->
-            <main class="container mx-auto p-4 w-full">
-                <div v-if="flashSuccess" class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2">
+            <main class="container mx-auto p-4 w-full pt-6">
+                <div v-if="flashSuccess" class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2 text-green-800">
                 {{ flashSuccess }}
+                </div>
+                <div v-if="flashError" class="mb-4 border rounded-md shadow-sm border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 p-2 text-red-800">
+                {{ flashError }}
                 </div>
                 <slot> Default </slot>
             </main>

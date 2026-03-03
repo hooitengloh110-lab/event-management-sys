@@ -22,7 +22,7 @@ class EventPolicy
     public function view(User $user, Event $event): bool
     {
         if($event->status === 'published') return true;
-        return $user->role === 'admin' || $user->id === $event->organiser_id;
+        return true;
     }
 
     /**

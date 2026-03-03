@@ -6,10 +6,10 @@
       <div>
         <span v-if="notification.type === 'App\\Notifications\\OfferMade'">
           Offer <Price :price="notification.data.amount" /> for
-          <!-- <Link
+          <Link
             :href="route('realtor.listing.show', {listing: notification.data.listing_id})" 
             class="text-indigo-600 dark:text-indigo-400"
-          >listing</Link> was made -->
+          >listing</Link> was made
         </span>
       </div>
       <div>

@@ -24,11 +24,11 @@ defineProps({
 })
 
 const confirm = (id) => {
-  router.patch(route('registration.confirm', id))
+  router.patch(route('event.registration.confirm', id))
 }
 
 const cancel = (id) => {
-  router.patch(route('registration.cancel', id))
+  router.patch(route('event.registration.cancel', id))
 }
 
 const statusClass = (status) => {
@@ -83,7 +83,7 @@ const statusClass = (status) => {
           <Button
             v-if="registration.status === 'pending'"
             size="sm" variant="secondary" class="confirm-button my-2"
-            @click="confirm(registration.id)"
+            @click="confirm({registration: registration.id})"
           >
             Confirm
           </Button>

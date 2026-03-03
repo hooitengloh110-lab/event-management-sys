@@ -74,7 +74,7 @@
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-muted-foreground mb-1">Capacity</p>
             <div class="flex items-center gap-2">
-              <p class="flex text-sm font-medium">{{ registered || registrations.data.length }} / {{ event.capacity }} registered</p>
+              <p class="flex text-sm font-medium">{{ registered || (registrations?.data.length ?? 0) }} / {{ event.capacity }} registered</p>
               <p v-if="available != 0" class="flex text-red-500">
                {{ available }} available
               </p>
@@ -111,17 +111,14 @@ import StatusBadge from '@/Components/Display/StatusBadge.vue';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Separator } from '@/Components/ui/separator';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue'
+import MainLayout from '@/Layouts/MainLayout.vue';
 import { formatCurrency } from '@/useFormatCurrency';
 import { useDateFormat } from '@/useFormatDate';
+import { usePage } from '@inertiajs/vue3';
 import { CalendarIcon, ClockIcon, DollarSignIcon, Image, ImageIcon, Images, ImagesIcon, MapPinIcon, TagIcon, UsersIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const { formatDateTime } = useDateFormat()
-
-defineOptions({
-  layout: DashboardLayout
-})
-
 const props = defineProps({
   event: Object,
   registrations: Object

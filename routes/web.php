@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AttendeeController;
+use App\Http\Controllers\AttendeeEventController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\EventRegistrationController;
@@ -7,6 +9,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\OrganiserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,15 +40,24 @@ Route::resource('notification', NotificationController::class)
 Route::put('notification/{notification}/seen', NotificationSeenController::class)
   ->middleware('auth')->name('notification.seen');
 
+Route::get('/event', [EventController::class, 'index'])->name('event.index');
+Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-  Route::resource('event', EventController::class)->middleware('role:organiser');
+  Route::resource('event', EventController::class)->middleware('role:organiser')
+    ->except(['index','show']);
 
   Route::resource('event.image', EventImageController::class)
     ->only(['create', 'store', 'destroy']);
 
   Route::get('event/{event}/registrations', [EventRegistrationController::class, 'index'])->name('event.registration.index');
-  Route::patch('registration/{registration}/confirm', [EventRegistrationController::class, 'confirm'])->name('registration.confirm');
-  Route::patch('registration/{registration}/cancel', [EventRegistrationController::class, 'cancel'])->name('registration.cancel');
+  Route::prefix('event/registration')->group(function () {
+    Route::patch('{registration}/confirm', [EventRegistrationController::class, 'confirm'])
+        ->name('event.registration.confirm');
+
+    Route::patch('{registration}/cancel', [EventRegistrationController::class, 'cancel'])
+        ->name('event.registration.cancel');
+  });
 });
 
 /*
@@ -83,9 +95,16 @@ Route::middleware(['auth', 'verified', 'role:attendee'])
   ->prefix('attendee')
   ->name('attendee.')
   ->group(function () {
-    Route::get('/dashboard', function () {
-      return Inertia::render('Attendee/Dashboard');
-    })->name('dashboard');
-  });
+    Route::get('/dashboard', [AttendeeController::class, 'index'])->name('dashboard');
+
+    Route::resource('event', AttendeeEventController::class)
+      ->only(['index','show']);
+      
+    Route::post('event/{event}/register', [AttendeeEventController::class, 'register'])
+      ->name('event.register');
+});
+
+  Route::patch('registration/{registration}/confirm', [RegistrationController::class, 'confirm'])->name('registration.confirm');
+  Route::patch('registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('registration.cancel');
 
 require __DIR__ . '/auth.php';
