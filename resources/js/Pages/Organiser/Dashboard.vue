@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import Pagination from '@/Components/Display/Pagination.vue';
-import Button from '@/Components/ui/button/Button.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import type { DefineComponent } from 'vue'
 import { formatCurrency } from '@/useFormatCurrency'
 import StatCard from '@/Components/Display/StatCard.vue';
+import Button from '@/components/ui/button/Button.vue';
+
 
 interface Stats {
   total_events: number
@@ -24,13 +25,18 @@ interface Event {
   revenue: number
 }
 
+interface PaginatedEvents {
+  data: Event[]
+  links: any[]
+}
+
 defineOptions({
   layout: DashboardLayout
 })
 
 const props = defineProps<{
-  stats: Stats
-  upcomingEvents: Event[]
+  stats: Stats,
+  upcomingEvents: PaginatedEvents
 }>()
 
 const formatDate = (date: string) => {
@@ -46,6 +52,11 @@ const formatDate = (date: string) => {
     minute: '2-digit',
     hour12: true,
   });
+}
+
+const create = () => {
+  console.log("Ss");
+  // form.get(route('event.create'))
 }
 </script>
 

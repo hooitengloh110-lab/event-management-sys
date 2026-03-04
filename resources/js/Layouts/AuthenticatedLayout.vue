@@ -44,7 +44,8 @@ const flashSuccess = computed(() => page.props.flash.success)
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
+                                    :href="route('organiser.dashboard')"
+                                    
                                     :active="route().current('dashboard')"
                                 >
                                     Dashboard

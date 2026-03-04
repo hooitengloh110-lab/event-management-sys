@@ -74,13 +74,13 @@ import EventLocation from '@/Components/Display/EventLocation.vue';
 import Pagination from '@/Components/Display/Pagination.vue';
 import Price from '@/Components/Display/Price.vue';
 import StatusBadge from '@/Components/Display/StatusBadge.vue';
-import { Button } from '@/Components/ui/button';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
 import { useDateFormat } from '@/useFormatDate.js'
 import OrganiserEventFilter from '@/Components/Display/OrganiserEventFilter.vue';
 import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/Components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 const { formatDateTime } = useDateFormat()
 

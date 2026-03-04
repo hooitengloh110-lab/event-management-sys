@@ -1,29 +1,3 @@
-<script setup lang="ts">
-import Box from '@/Components/Display/Box.vue';
-import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue';
-import EventCapacity from '@/Components/Display/EventCapacity.vue';
-import EventLocation from '@/Components/Display/EventLocation.vue';
-import Price from '@/Components/Display/Price.vue';
-import StatusBadge from '@/Components/Display/StatusBadge.vue';
-import { Button } from '@/Components/ui/button';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import MainLayout from '@/Layouts/MainLayout.vue';
-import { useDateFormat } from '@/useFormatDate';
-import { Head, Link, router } from '@inertiajs/vue3';
-
-defineOptions({
-  layout: MainLayout
-})
-
-const props = defineProps<{
-  registrations: Object
-}>()
-const { formatDateTime } = useDateFormat()
-const cancel = (id) => {
-  router.patch(route('registration.cancel', id))
-}
-</script>
-
 <template>
   <Head title="Dashboard" />
 
@@ -81,3 +55,29 @@ const cancel = (id) => {
   <div></div>
     
 </template>
+
+<script setup lang="ts">
+import Box from '@/Components/Display/Box.vue';
+import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue';
+import EventCapacity from '@/Components/Display/EventCapacity.vue';
+import EventLocation from '@/Components/Display/EventLocation.vue';
+import Price from '@/Components/Display/Price.vue';
+import StatusBadge from '@/Components/Display/StatusBadge.vue';
+import { Button } from '@/components/ui/button';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
+import { useDateFormat } from '@/useFormatDate';
+import { Head, Link, router } from '@inertiajs/vue3';
+
+defineOptions({
+  layout: MainLayout
+})
+
+const props = defineProps<{
+  registrations: Object
+}>()
+const { formatDateTime } = useDateFormat()
+const cancel = (id) => {
+  router.patch(route('registration.cancel', id))
+}
+</script>

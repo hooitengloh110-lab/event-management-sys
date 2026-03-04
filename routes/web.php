@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendeeController;
-use App\Http\Controllers\AttendeeEventController;
+
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventImageController;
 use App\Http\Controllers\EventRegistrationController;
@@ -10,9 +10,11 @@ use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\OrganiserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AttendeeEventController;
 
 Route::get('/', function () {
   return Inertia::render('Welcome', [
@@ -40,9 +42,6 @@ Route::resource('notification', NotificationController::class)
 Route::put('notification/{notification}/seen', NotificationSeenController::class)
   ->middleware('auth')->name('notification.seen');
 
-Route::get('/event', [EventController::class, 'index'])->name('event.index');
-Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
-
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::resource('event', EventController::class)->middleware('role:organiser')
     ->except(['index','show']);
@@ -59,6 +58,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('event.registration.cancel');
   });
 });
+
+Route::get('/event', [EventController::class, 'index'])->name('event.index');
+Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +104,11 @@ Route::middleware(['auth', 'verified', 'role:attendee'])
       
     Route::post('event/{event}/register', [AttendeeEventController::class, 'register'])
       ->name('event.register');
+
+    Route::get('event/{event}/review', [ReviewController::class, 'create'])
+      ->name('event.review.create');
+    Route::post('event/{event}/review', [ReviewController::class, 'store'])
+      ->name('event.review.store');
 });
 
   Route::patch('registration/{registration}/confirm', [RegistrationController::class, 'confirm'])->name('registration.confirm');

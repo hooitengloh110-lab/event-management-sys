@@ -15,7 +15,6 @@ class EnsureRole
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        // dd(auth()->user()->role, $roles);
         if(!auth()->check() || !in_array(auth()->user()->role, $roles)) {
             abort(403, 'Unauthorized');
         }

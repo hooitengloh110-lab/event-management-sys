@@ -119,10 +119,37 @@ import { CalendarIcon, ClockIcon, DollarSignIcon, Image, ImageIcon, Images, Imag
 import { computed } from 'vue';
 
 const { formatDateTime } = useDateFormat()
-const props = defineProps({
-  event: Object,
-  registrations: Object
-})
+
+interface Event {
+  id: number
+  title: string
+  status: string | null
+  images: { id: number; src: string }[]
+  description: string
+  location: string
+  category: string
+  start_datetime: string
+  end_datetime: string
+  capacity: number
+  price: number
+  registrations_count?: number
+  confirm_registrations_count?: number
+  cancelled_registrations_count?: number
+}
+
+interface RegistrationData {
+  data: any[]
+}
+
+const props = defineProps<{
+  event: Event
+  registrations?: RegistrationData
+}>()
+
+// const props = defineProps({
+//   event: Event,
+//   registrations: Object
+// })
 
 const cancelled = computed(() => props.event?.cancelled_registrations_count ?? 0)
 const registered = computed(() => {
@@ -134,5 +161,5 @@ const available = computed(() => {
   return cap - registered.value
 })
 
-const revenue = computed(() => props.event?.price * props.event?.confirm_registrations_count)
+const revenue = computed(() => props.event?.price * (props.event?.confirm_registrations_count ?? 0))
 </script>

@@ -82,7 +82,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import DashboardLayout from '@/Layouts/DashboardLayout.vue'
-import Button from '@/Components/ui/button/Button.vue'
 import SingleSelect from '@/Components/SingleSelect.vue'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
 import { useForm } from '@inertiajs/vue3'
@@ -90,6 +89,7 @@ import TextInput from '@/Components/TextInput.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import InputError from '@/Components/InputError.vue'
+import { Button } from '@/components/ui/button'
 
 defineOptions({
     layout: DashboardLayout
