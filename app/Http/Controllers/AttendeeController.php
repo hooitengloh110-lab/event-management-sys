@@ -14,7 +14,14 @@ class AttendeeController extends Controller
     $user = $request->user();
     $registrations = $user->registrations()
         ->with([
-          'event'
+          'event' => function ($query) {
+            $query->withCount([
+                'registrations',
+                'registrations as cancelled_registrations_count' => function ($q) {
+                    $q->where('status', 'cancelled')->whereNull('deleted_at');
+                }
+            ]);
+          }
         ])
         ->latest()
         ->paginate(6)

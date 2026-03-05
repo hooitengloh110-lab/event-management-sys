@@ -51,6 +51,11 @@ class EventController extends Controller
           ->filter($filters)
           ->withCount('images')
           ->withCount('registrations')
+          ->withCount([
+            'registrations as cancelled_registrations_count' => function ($query) {
+                $query->where('status', 'cancelled')->whereNull('deleted_at');
+            }
+          ])
           ->paginate(6)
           ->withQueryString(),
         'indexRoute' => $routeName,

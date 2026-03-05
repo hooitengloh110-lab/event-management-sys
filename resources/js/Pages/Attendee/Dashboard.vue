@@ -1,6 +1,6 @@
 <template>
   <Head title="Dashboard" />
-
+  <h1 class="text-3xl mb-4">Your Registered Events </h1>
   <section v-if="registrations.data.length" class="grid grid-cols-1 lg:grid-cols-2 gap-2">
     <Box v-for="registration in registrations.data" :key="registration.id" :class="{ 'border-dashed' : registration.deleted_at }">
       <div class="flex flex-col md:flex-row gap-2 md:items-center justify-between">

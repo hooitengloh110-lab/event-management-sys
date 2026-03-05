@@ -16,7 +16,8 @@ class UpcomingEventSeeder extends Seeder
   {
     Event::factory(10)->create([
       'organiser_id' => 16,
-      'status' => 'published'
+      'status' => 'published',
+      'capacity' => 1
     ])->each(function ($event, $index) {
       $startDatetime = Carbon::parse(
         fake()->dateTimeBetween('-1 month', '+1 month')

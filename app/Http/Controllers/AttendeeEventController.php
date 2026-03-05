@@ -36,7 +36,13 @@ class AttendeeEventController extends Controller
     $filters['deleted'] = $request->boolean('deleted');
     $filters['freeOnly'] = $request->boolean('freeOnly');
 
-    $event = Event::with('images', 'registrations', 'organiser')->where('status', 'published');
+    $event = Event::with('images', 'registrations', 'organiser')
+      ->withCount([
+        'registrations as cancelled_registrations_count' => function ($query) {
+            $query->where('status', 'cancelled')->whereNull('deleted_at');
+        }
+      ])
+    ->where('status', 'published');
 
     $routeName = match ($request->user()->role) {
         'attendee' => 'attendee.event.index',
