@@ -30,23 +30,15 @@ const flashSuccess = computed(() => page.props.flash.success)
                 <div class="mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
-                            <!-- Logo -->
-                            <!-- <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div> -->
 
                             <!-- Navigation Links -->
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('organiser.dashboard')"
+                                    :href="$page.props.auth.user.role === 'organiser' ? route('organiser.dashboard') : route('attendee.dashboard')"
                                     
-                                    :active="route().current('dashboard')"
+                                    :active="$page.props.auth.user.role === 'organiser' ? route().current('organiser.dashboard') : route().current('attendee.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -151,8 +143,9 @@ const flashSuccess = computed(() => page.props.flash.success)
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="$page.props.auth.user.role === 'organiser' ? route('organiser.dashboard') : route('attendee.dashboard')"
+                            :active="$page.props.auth.user.role === 'organiser' ? route().current('organiser.dashboard') : route().current('attendee.dashboard')"
+
                         >
                             Dashboard
                         </ResponsiveNavLink>

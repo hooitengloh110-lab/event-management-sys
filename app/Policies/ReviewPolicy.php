@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Event;
 use App\Models\Review;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\Response;
 
 class ReviewPolicy
@@ -30,7 +31,7 @@ class ReviewPolicy
      */
     public function create(User $user, Event $event): bool
     {
-        return $user->role === 'attendee' && $event->event_datetime->isPast();
+        return $user->role === 'attendee';
     }
 
     /**

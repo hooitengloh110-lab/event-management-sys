@@ -48,11 +48,7 @@ export const useDateFormat = () => {
   const formatDateTime = (dateStr) => {
     if (!dateStr) return ''
 
-    let cleanStr = dateStr
-      .replace('Z', '')
-      .split('.')[0]  
-
-    const d = new Date(cleanStr)
+    const d = new Date(dateStr)
 
     if (isNaN(d.getTime())) return ''
 

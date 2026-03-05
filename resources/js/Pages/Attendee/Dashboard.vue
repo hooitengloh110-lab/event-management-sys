@@ -36,6 +36,13 @@
                 </Button>
               </template>
             </ConfirmDialog>
+            <Link v-if="registration.status=== 'confirmed' && registration.event.isPast" :href="route('attendee.event.review.create', { event: registration.event.id})">
+              <Button variant="outline" size="default" class="bg-gray-200 hover:bg-gray-100 dark:bg-gray-700">+ Review</Button>
+            </Link>
+            <Link v-if="registration.status=== 'confirmed' && registration.event.isPast" :href="route('attendee.event.review.index', { event: registration.event.id})">
+              <Button variant="outline" size="default" class="">Review</Button>
+            </Link>
+            
           </div>
         </section>
       </div>
@@ -52,7 +59,9 @@
     </div>
   </div>
 
-  <div></div>
+  <section v-if="registrations.data.length" class="w-full flex justify-center mt-4 mb-4">
+    <Pagination :links="registrations.links" />
+  </section>
     
 </template>
 
@@ -61,6 +70,7 @@ import Box from '@/Components/Display/Box.vue';
 import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue';
 import EventCapacity from '@/Components/Display/EventCapacity.vue';
 import EventLocation from '@/Components/Display/EventLocation.vue';
+import Pagination from '@/Components/Display/Pagination.vue';
 import Price from '@/Components/Display/Price.vue';
 import StatusBadge from '@/Components/Display/StatusBadge.vue';
 import { Button } from '@/components/ui/button';
@@ -80,4 +90,5 @@ const { formatDateTime } = useDateFormat()
 const cancel = (id) => {
   router.patch(route('registration.cancel', id))
 }
+
 </script>

@@ -6,7 +6,8 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { PageProps as InertiaPageProps, router } from '@inertiajs/core';
+import NotificationDropdown from '@/Components/Display/NotificationDropdown.vue';
 
 const showingNavigationDropdown = ref(false);
 interface AppPageProps extends InertiaPageProps {
@@ -15,13 +16,27 @@ interface AppPageProps extends InertiaPageProps {
     error: string | null;
   };
 }
+const props = defineProps<{ notificationsBell: Notification[] }>()
+
 const page = usePage<AppPageProps>();
 const flashSuccess = computed(() => page.props.flash.success)
 const user = computed(() => page.props.auth.user)
 const notificationCount = computed(
   () => Math.min(page.props.auth.user.notificationCount, 9),
 )
+const notifications = computed(() => props.notificationsBell)
+const showNotification = ref(false)
 
+const openNotifications = () => {
+  showNotification.value = !showNotification.value;
+  if (showNotification.value && notificationCount.value > 0) {
+    router.post(route('notification.all-read'), {}, {
+      preserveState: true,
+      preserveScroll: true,
+    });
+    notificationCount.value = 0;
+  }
+}
 </script>
 
 <template>
@@ -34,14 +49,6 @@ const notificationCount = computed(
                 <div class="mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
-                            <!-- Logo -->
-                            <!-- <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div> -->
 
                             <!-- Navigation Links -->
                             <div
@@ -65,15 +72,17 @@ const notificationCount = computed(
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
                             <!-- Settings Dropdown -->
                             <div class="flex items-center gap-2 ms-3">
-                                <Link v-if="user"
+                                <button v-if="user"
                                     class="text-gray-500 relative pr-2 py-2 text-lg" 
-                                    :href="route('notification.index')"
+                                    @click="openNotifications"
                                 >
                                     🔔
                                     <div v-if="notificationCount" class="absolute right-0 top-0 w-5 h-5 bg-red-700 dark:bg-red-400 text-white font-medium border border-white dark:border-gray-900 rounded-full text-xs text-center">
                                     {{ notificationCount }}
                                     </div>
-                                </Link>
+                                  </button>
+                                <NotificationDropdown :notifications="notifications.data ?? notifications" :show="showNotification" :notification-count="notificationCount"/>
+
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">

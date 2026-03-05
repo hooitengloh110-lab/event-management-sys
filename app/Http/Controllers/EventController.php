@@ -21,8 +21,33 @@ class EventController extends Controller
 
       $filters = [
         'deleted' => $request->boolean('deleted'),
-        ...$request->only(['by', 'order'])
+        ...$request->only([
+          'keyword',
+          'category',
+          'priceFrom',
+          'priceTo',
+          'capacity',
+          'freeOnly',
+          'dateFrom',
+          'dateTo',
+          'deleted',
+          'by',
+          'order'
+        ])
       ];
+    $filters['deleted'] = $request->boolean('deleted');
+    $filters['freeOnly'] = $request->boolean('freeOnly');
+
+      $routeName = match ($request->user()->role) {
+          'attendee' => 'attendee.event.index',
+          default => 'event.index',
+      };
+
+      $notifications = $request->user()->notifications()
+        ->orderByRaw('read_at IS NULL DESC')
+        ->latest()
+        ->take(5)
+        ->get();
 
       return inertia('Event/Index', [
         'filters' => $filters,
@@ -33,7 +58,9 @@ class EventController extends Controller
           ->withCount('images')
           ->withCount('registrations')
           ->paginate(6)
-          ->withQueryString()
+          ->withQueryString(),
+        'indexRoute' => $routeName,
+        'notificationsBell' => $notifications
       ]);
     }
 
@@ -79,9 +106,7 @@ class EventController extends Controller
         }
       }
 
-      return redirect()->route('organiser.dashboard')
-        ->with('success', 'Event was created!');
-
+      return redirect()->route('organiser.dashboard')->with('success', 'Event was created!');
     }
 
     /**

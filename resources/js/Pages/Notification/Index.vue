@@ -4,12 +4,34 @@
   <section v-if="notifications.data.length" class="text-gray-700 dark:text-gray-400">
     <div v-for="notification in notifications.data" :key="notification.id" class="border-b border-gray-200 dark:border-gray-800 py-4 flex justify-between items-center">
       <div>
-        <span v-if="notification.type === 'App\\Notifications\\OfferMade'">
-          Offer <Price :price="notification.data.amount" /> for
-          <Link
-            :href="route('realtor.listing.show', {listing: notification.data.listing_id})" 
-            class="text-indigo-600 dark:text-indigo-400"
-          >listing</Link> was made
+        <span v-if="notification.type === 'App\\Notifications\\RegistrationConfirmedNotification'">
+          Your registration for 
+          <strong>{{ notification.data.title }}</strong> 
+          has been confirmed!
+        </span>
+
+        <span v-else-if="notification.type === 'App\\Notifications\\RegistrationCancelledNotification'">
+          Your registration for 
+          <strong>{{ notification.data.title }}</strong> 
+          was cancelled.
+        </span>
+
+        <span v-else-if="notification.type === 'App\\Notifications\\EventCancelledNotification'">
+          The event <strong>{{ notification.data.title }}</strong> was cancelled.
+        </span>
+
+        <span v-else-if="notification.type === 'App\\Notifications\\AttendeeRegistrationCancelled'">
+          <strong>{{ notification.data.attendee_name }}</strong> cancelled their registration for 
+          <strong>{{ notification.data.title }}</strong>.
+        </span>
+
+        <span v-else-if="notification.type === 'App\\Notifications\\NewEventRegistration'">
+          <strong>{{ notification.data.attendee_name }}</strong> registered for your event 
+          <strong>{{ notification.data.title }}</strong>.
+        </span>
+
+        <span v-else>
+          You have a new notification.
         </span>
       </div>
       <div>
@@ -35,6 +57,7 @@ import Button from '@/Components/ui/button/Button.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { Link, usePage } from '@inertiajs/vue3'
+import { formatDate, useDateFormat } from '@vueuse/core';
 import { computed } from 'vue';
 
 const page = usePage()
@@ -56,5 +79,6 @@ defineOptions({
     return h(Layout, page.props, () => page)
   }
 })
+const { formatDateTime } = useDateFormat()
 
 </script>

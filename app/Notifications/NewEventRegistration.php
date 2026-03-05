@@ -54,7 +54,7 @@ class NewEventRegistration extends Notification
         return [
             'registration_id' => $this->registration->id,
             'event_id' => $this->registration->event->id,
-            'event_title' => $this->registration->event->title,
+            'title' => $this->registration->event->title,
             'attendee_name' => $this->registration->attendee->name,
             'message' => $this->registration->attendee->name .
                 ' has registered for your event "' .

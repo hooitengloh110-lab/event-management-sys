@@ -47,7 +47,7 @@ const selectedLabel = computed(() => {
   <Select v-model="selected">
     <SelectTrigger>
       <!-- Show the capitalized label -->
-      <span>{{ selectedLabel || props.placeholder || 'Select...' }}</span>
+      <span class="mr-3">{{ selectedLabel || props.placeholder || 'Select...' }}</span>
     </SelectTrigger>
     <SelectContent>
       <SelectGroup>

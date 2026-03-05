@@ -13,6 +13,7 @@
           {{ n }} Star
         </option>
       </select>
+      <InputError class="mt-2" :message="form.errors.rating" />
 
       <label class="block mt-4 mb-2">Comment</label>
       <textarea
@@ -20,6 +21,8 @@
         class="border p-2 rounded w-full"
         rows="4"
       ></textarea>
+      <InputError class="mt-2" :message="form.errors.comment" />
+
 
       <div class="mt-6">
         <PrimaryButton type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Submit</PrimaryButton>
@@ -31,6 +34,7 @@
 
 <script setup lang="ts">
 import Box from '@/Components/Display/Box.vue';
+import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Button from '@/components/ui/button/Button.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';

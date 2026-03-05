@@ -15,4 +15,10 @@ class NotificationSeenController extends Controller
 
         return redirect()->back()->with('success', 'Notification marked as read');
     }
+
+    public function markAllRead(DatabaseNotification $notification)
+    {
+      auth()->user()->unreadNotifications->markAsRead();
+      return redirect()->back();
+    }
 }

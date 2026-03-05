@@ -34,8 +34,15 @@ class ConfirmablePasswordController extends Controller
             ]);
         }
 
+        $role = $request->user()->role;
+        if (in_array($role, ['organiser', 'admin'])) {
+          $goTo = 'organiser.dashboard';
+        } else {
+          $goTo = 'attendee.dashboard';
+        }
+
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route($goTo, absolute: false));
     }
 }

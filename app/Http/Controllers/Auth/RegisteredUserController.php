@@ -15,32 +15,37 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): Response
-    {
-        return Inertia::render('Auth/Register');
+  /**
+   * Display the registration view.
+   */
+  public function create(): Response
+  {
+    return Inertia::render('Auth/Register');
+  }
+
+  /**
+   * Handle an incoming registration request.
+   *
+   * @throws \Illuminate\Validation\ValidationException
+   */
+  public function store(Request $request): RedirectResponse
+  {
+    if (in_array($request->role, ['organiser', 'admin'])) {
+      $goTo = 'organiser.dashboard';
+    } else {
+      $goTo = 'attendee.dashboard';
     }
+    $user = User::create($request->validate([
+      'name' => 'required|string|max:255|min:3',
+      'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+      'password' => ['required', 'min:8', 'confirmed', Rules\Password::defaults()],
+      'role' => 'required|string',
+    ]));
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $user = User::create($request->validate([
-            'name' => 'required|string|max:255|min:3',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'min:8' ,'confirmed', Rules\Password::defaults()],
-            'role' => 'required|string',
-        ]));
+    event(new Registered($user));
+    Auth::login($user);
 
-        event(new Registered($user));
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false))
-            ->with('success', 'Register successfully!');
-    }
+    return redirect(route($goTo, absolute: false))
+      ->with('success', 'Register successfully!');
+  }
 }

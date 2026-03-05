@@ -26,7 +26,6 @@ return new class extends Migration
             $table->index('attendee_id');
             $table->index('status');
 
-            $table->unique(['event_id', 'attendee_id']);
         });
     }
 

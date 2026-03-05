@@ -23,13 +23,19 @@ class OrganiserController extends Controller
       ->where('start_datetime', '>=', now())
       ->where('status', 'published')
       ->orderBy('start_datetime', 'asc')
-      ->paginate(5) // 5 per page
+      ->paginate(5)
       ->withQueryString();
 
     $upcomingEvents->getCollection()->transform(function ($event) {
       $event->revenue = $event->price * $event->registrations_count;
       return $event;
     });
+
+    $notifications = $organiser->notifications()
+      ->orderByRaw('read_at IS NULL DESC')
+      ->latest()
+      ->take(5)
+      ->get();
 
     return Inertia::render('Organiser/Dashboard', [
       'stats' => [
@@ -40,6 +46,7 @@ class OrganiserController extends Controller
         }),
       ],
       'upcomingEvents' => $upcomingEvents,
+      'notificationsBell' => $notifications
     ]);
   }
 }

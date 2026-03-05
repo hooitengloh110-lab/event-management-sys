@@ -92,6 +92,10 @@
     @apply placeholder:text-gray-400 dark:placeholder:text-gray-600 border border-l-0 border-gray-200 dark:border-gray-700 rounded-t-md rounded-l-none rounded-b-none rounded-r-md text-sm font-medium text-gray-600 dark:text-gray-400 dark:bg-gray-800
   }
 
+  .input-filter {
+    @apply placeholder:text-gray-400 dark:placeholder:text-gray-600 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium text-gray-600 dark:text-gray-400 dark:bg-gray-800 p-3
+  }
+
   .cancel-button {
     @apply bg-destructive/10 text-destructive/100 shadow-sm hover:bg-destructive/90 hover:text-white/100;
   }
@@ -102,5 +106,18 @@
 
   .hover-confirm {
     @apply text-white hover:bg-gray-300 hover:text-gray-900;
+  }
+
+  .checkbox-custom {
+    @apply h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: all 0.2s ease;
+  }
+
+  .fade-enter-from, .fade-leave-to {
+    opacity: 0;
+    transform: translateY(-5px);
   }
 }

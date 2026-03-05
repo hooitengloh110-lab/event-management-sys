@@ -59,8 +59,8 @@ class DatabaseSeeder extends Seeder
       }
     }
 
-    $this->call([
-      UpcomingEventSeeder::class,
-    ]);
+    // $this->call([
+    //   UpcomingEventSeeder::class,
+    // ]);
   }
 }

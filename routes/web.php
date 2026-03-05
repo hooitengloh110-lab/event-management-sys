@@ -39,6 +39,8 @@ Route::resource('notification', NotificationController::class)
   ->middleware('auth')
   ->only(['index']);
 
+Route::post('/notifications/mark-all-read', [NotificationSeenController::class, 'markAllRead'])->name('notification.all-read');
+
 Route::put('notification/{notification}/seen', NotificationSeenController::class)
   ->middleware('auth')->name('notification.seen');
 
@@ -105,10 +107,14 @@ Route::middleware(['auth', 'verified', 'role:attendee'])
     Route::post('event/{event}/register', [AttendeeEventController::class, 'register'])
       ->name('event.register');
 
-    Route::get('event/{event}/review', [ReviewController::class, 'create'])
+    Route::get('event/{event}/review/create', [ReviewController::class, 'create'])
       ->name('event.review.create');
     Route::post('event/{event}/review', [ReviewController::class, 'store'])
       ->name('event.review.store');
+    Route::get('event/{event}/review', [ReviewController::class, 'index'])
+      ->name('event.review.index');
+    Route::get('event/{event}/review/{review}', [ReviewController::class, 'show'])
+      ->name('event.review.show');
 });
 
   Route::patch('registration/{registration}/confirm', [RegistrationController::class, 'confirm'])->name('registration.confirm');

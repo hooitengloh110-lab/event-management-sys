@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
@@ -12,9 +13,13 @@ class ReviewController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Event $event)
   {
-    // return Inertia::render('Attendee/Review/Index');
+    $event->load([
+        'reviews.attendee:id,name',
+    ]);
+
+    return Inertia::render('Attendee/Review/Index', ['event' => $event, 'reviews' => $event->reviews]);
   }
 
   /**
@@ -22,6 +27,7 @@ class ReviewController extends Controller
    */
   public function create(Event $event)
   {
+    Gate::authorize("create", [Review::class, $event]);
     return Inertia::render('Attendee/Review/Create', ['event' => $event]);
   }
 
@@ -46,11 +52,11 @@ class ReviewController extends Controller
 
     if ($event->reviews()->where('attendee_id', $user->id)->exists()) {
       return back()->with('error', 'You have already reviewed this event.');
-    }dd($request);
+    }
 
     $validated = $request->validate([
       'rating' => ['required', 'integer', 'between:1,5'],
-      'comment' => ['nullable', 'string', 'max:1000'],
+      'comment' => ['required', 'string', 'max:1000'],
     ]);
 
     Review::create([
@@ -60,15 +66,15 @@ class ReviewController extends Controller
       'comment' => $validated['comment'] ?? null,
     ]);
 
-    return back()->with('success', 'Thank you for your review!');
+    return redirect()->route('attendee.dashboard')->with('success', 'Thank you for your review!');
   }
 
   /**
    * Display the specified resource.
    */
-  public function show(Review $review)
+  public function show(Event $event, Review $review)
   {
-    //
+    return Inertia::render('Attendee/Review/Show', ['event' => $event, 'review' => $review]);
   }
 
   /**

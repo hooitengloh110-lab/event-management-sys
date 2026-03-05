@@ -1,13 +1,26 @@
 <template>
   <Card>
     <CardHeader>
-      <div class="flex items-center gap-6">
-        <h1 class="text-3xl font-bold">{{ event.title }}</h1>
-        <StatusBadge v-if="event.status != null" :status="event.status"/>
+      <div class="flex flex-row flex-wrap items-start justify-between gap-6">
+        <div class="flex flex-row flex-wrap items-center gap-6">
+          <h1 class="text-3xl font-bold">{{ event.title }}</h1>
+          <StatusBadge v-if="event.status != null" :status="event.status" />
+        </div>
+        <div v-if="event.organiser" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+            <span class="text-white font-semibold text-sm">
+              {{ event.organiser.name.charAt(0).toUpperCase() }}
+            </span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xs text-muted-foreground">Organized by</span>
+            <span class="text-sm font-semibold">{{ event.organiser.name }}</span>
+          </div>
+        </div>
       </div>
     </CardHeader>
 
-    <div v-if="event.images.length" class="w-full px-8 pb-8">
+    <div v-if="event.images.length" class="w-full my-3 px-8 pb-8">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 w-full">
         <img v-for="image in event.images" :key="image.id" :src="image.src" class="rounded-lg object-cover h-48 w-full" />
       </div>
@@ -74,7 +87,7 @@
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-muted-foreground mb-1">Capacity</p>
             <div class="flex items-center gap-2">
-              <p class="flex text-sm font-medium">{{ registered || (registrations?.data.length ?? 0) }} / {{ event.capacity }} registered</p>
+              <p class="flex text-sm font-medium">{{ registered }} / {{ event.capacity }} registered</p>
               <p v-if="available != 0" class="flex text-red-500">
                {{ available }} available
               </p>

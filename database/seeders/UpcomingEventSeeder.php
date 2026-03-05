@@ -15,7 +15,7 @@ class UpcomingEventSeeder extends Seeder
   public function run(): void
   {
     Event::factory(10)->create([
-      'organiser_id' => 2,
+      'organiser_id' => 16,
       'status' => 'published'
     ])->each(function ($event, $index) {
       $startDatetime = Carbon::parse(
