@@ -19,7 +19,10 @@ class ReviewController extends Controller
         'reviews.attendee:id,name',
     ]);
 
-    return Inertia::render('Attendee/Review/Index', ['event' => $event, 'reviews' => $event->reviews]);
+    return Inertia::render('Attendee/Review/Index', [
+      'event' => $event, 
+      'reviews' => $event->reviews,
+    ]);
   }
 
   /**

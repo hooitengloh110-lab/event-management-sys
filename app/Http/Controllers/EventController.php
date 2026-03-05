@@ -43,12 +43,6 @@ class EventController extends Controller
           default => 'event.index',
       };
 
-      $notifications = $request->user()->notifications()
-        ->orderByRaw('read_at IS NULL DESC')
-        ->latest()
-        ->take(5)
-        ->get();
-
       return inertia('Event/Index', [
         'filters' => $filters,
         'events' => Auth::user()
@@ -60,7 +54,6 @@ class EventController extends Controller
           ->paginate(6)
           ->withQueryString(),
         'indexRoute' => $routeName,
-        'notificationsBell' => $notifications
       ]);
     }
 
@@ -69,7 +62,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', Event::class);
+      Gate::authorize('create', Event::class);
 
         return Inertia::render('Event/Create');
     }

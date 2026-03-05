@@ -5,7 +5,10 @@
     <Box v-for="registration in registrations.data" :key="registration.id" :class="{ 'border-dashed' : registration.deleted_at }">
       <div class="flex flex-col md:flex-row gap-2 md:items-center justify-between">
         <div :class="{ 'opacity-25' : registration.deleted_at }">
-          <StatusBadge v-if="registration.status != null" :status="registration.status"/>
+          <div class="flex items-start flex-wrap gap-3">
+            <StatusBadge v-if="registration.status != null" :status="registration.status"/>
+            <Badge v-if="registration.event.category != null" variant="outline" class="btn-outline py-1 uppercase">{{ registration.event.category }}</Badge>
+          </div>
           <div class="xl:flex items-center gap-2">
             <Price :price="registration.event.price" class="text-2xl font-medium" />
             <EventCapacity :event="registration.event" />
@@ -73,6 +76,7 @@ import EventLocation from '@/Components/Display/EventLocation.vue';
 import Pagination from '@/Components/Display/Pagination.vue';
 import Price from '@/Components/Display/Price.vue';
 import StatusBadge from '@/Components/Display/StatusBadge.vue';
+import Badge from '@/Components/ui/badge/Badge.vue';
 import { Button } from '@/components/ui/button';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';

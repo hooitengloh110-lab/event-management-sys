@@ -27,15 +27,8 @@ class AttendeeController extends Controller
         return $registration;
     });
 
-    $notifications = $user->notifications()
-      ->orderByRaw('read_at IS NULL DESC')
-      ->latest()
-      ->take(5)
-      ->get();
-
     return Inertia::render('Attendee/Dashboard', [
         'registrations' => $registrations,
-        'notificationsBell' => $notifications
     ]);
     
   }

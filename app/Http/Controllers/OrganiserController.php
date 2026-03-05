@@ -31,12 +31,6 @@ class OrganiserController extends Controller
       return $event;
     });
 
-    $notifications = $organiser->notifications()
-      ->orderByRaw('read_at IS NULL DESC')
-      ->latest()
-      ->take(5)
-      ->get();
-
     return Inertia::render('Organiser/Dashboard', [
       'stats' => [
         'total_events' => $events->count(),
@@ -46,7 +40,6 @@ class OrganiserController extends Controller
         }),
       ],
       'upcomingEvents' => $upcomingEvents,
-      'notificationsBell' => $notifications
     ]);
   }
 }

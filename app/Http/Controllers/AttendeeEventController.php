@@ -43,12 +43,6 @@ class AttendeeEventController extends Controller
         default => 'event.index',
     };
 
-    $notifications = $request->user()->notifications()
-      ->orderByRaw('read_at IS NULL DESC')
-      ->latest()
-      ->take(5)
-      ->get();
-
     return inertia('Attendee/Event/Index', [
       'filters' => $filters,
       'events' => $event
@@ -56,11 +50,10 @@ class AttendeeEventController extends Controller
         ->paginate(6)
         ->withQueryString(),
       'indexRoute' => $routeName,
-      'notificationsBell' => $notifications
     ]);
   }
 
-  public function show(Event $event)
+  public function show(Request $request, Event $event)
   {
     Gate::authorize('view', $event);
 

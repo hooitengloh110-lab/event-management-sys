@@ -39,7 +39,14 @@ class HandleInertiaRequests extends Middleware
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                     'role' => $request->user()->role,
-                    'notificationCount' => $request->user()->unreadNotifications()->count()
+                    'notificationCount' => $request->user()->unreadNotifications()->count(),
+                    'notificationsBell' => fn () => $request->user()
+                      ? $request->user()->notifications()
+                          ->orderByRaw('read_at IS NULL DESC')
+                          ->latest()
+                          ->take(5)
+                          ->get()
+                      : [],
                 ] : null
             ],
             'flash' => [

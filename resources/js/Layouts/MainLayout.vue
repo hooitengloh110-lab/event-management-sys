@@ -26,7 +26,7 @@ const user = computed(() => page.props.auth.user)
 const notificationCount = computed(
   () => Math.min(page.props.auth.user.notificationCount, 9),
 )
-const notifications = computed(() => props.notificationsBell)
+const notifications = computed(() => page.props.auth.user.notificationsBell)
 const showNotification = ref(false)
 
 const openNotifications = () => {
