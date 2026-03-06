@@ -15,6 +15,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AttendeeEventController;
+use App\Http\Controllers\PublicEventController;
 
 Route::get('/', function () {
   return Inertia::render('Welcome', [
@@ -23,7 +24,7 @@ Route::get('/', function () {
     'laravelVersion' => Application::VERSION,
     'phpVersion' => PHP_VERSION,
   ]);
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
   return Inertia::render('Dashboard');
@@ -63,6 +64,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/event', [EventController::class, 'index'])->name('event.index');
 Route::get('/event/{event}', [EventController::class, 'show'])->name('event.show');
+
+
+Route::prefix('public')->name('public.')->group(function () {
+  Route::resource('event', PublicEventController::class)
+    ->only(['index','show']);
+});
+
 
 /*
 |--------------------------------------------------------------------------

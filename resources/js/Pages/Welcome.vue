@@ -75,7 +75,7 @@ function handleImageError() {
                       </p>
                       <div class="mt-8">
                         <Link 
-                          href="#" 
+                          :href="route('public.event.index')" 
                           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
                         >
                           Browse Events

@@ -112,8 +112,7 @@ class Event extends Model
         fn($q) => $q->where('price', 0)
       )->when($filters['dateFrom'] ?? false,
         fn($q, $value) => $q->whereDate('start_datetime', '>=', $value)
-      )
-      ->when($filters['dateTo'] ?? false,
+      )->when($filters['dateTo'] ?? false,
         fn($q, $value) => $q->whereDate('start_datetime', '<=', $value)
       )->when(
         $filters['deleted'] ?? false,
@@ -133,4 +132,91 @@ class Event extends Model
       );
     }
 
+  public function scopePublicFilter(Builder $query, array $filters): Builder
+  {
+    return $query
+      ->when($filters['keyword'] ?? false, function ($q, $value) {
+        $q->where(function ($sub) use ($value) {
+          $sub->where('title', 'like', "%{$value}%")
+            ->orWhere('description', 'like', "%{$value}%")
+            ->orWhere('location', 'like', '%' . "%{$value}%");
+        });
+      })->when(
+        $filters['category'] ?? false,
+        fn($q, $value) => $q->where('category', 'like', "%{$value}%")
+      )->when(($filters['price'] ?? null) === 'free',
+        fn($q) => $q->where('price', 0)
+      )
+      ->when(($filters['price'] ?? null) === 'paid',
+        fn($q) => $q->where('price', '>', 0)
+      )->when($filters['date'] ?? false, function ($q, $value) {
+        switch ($value) {
+          case 'today':
+            $q->whereDate('start_datetime', today());
+            break;
+          case 'tomorrow':
+            $q->whereDate('start_datetime', today()->addDay());
+            break;
+          case 'this_week':
+            $q->whereBetween('start_datetime', [
+              now(),
+              now()->endOfWeek()
+            ]);
+            break;
+          case 'this_month':
+            $q->whereMonth('start_datetime', now()->month);
+            break;
+        }
+      })->when($filters['sort'] ?? false, function ($q, $value) {
+          switch ($value) {
+            case 'date':
+              $q->orderBy('start_datetime', 'asc');
+              break;
+            case 'popular':
+              $q->orderBy('registrations_count', 'desc');
+              break;
+            case 'price_low':
+              $q->orderBy('price', 'asc');
+              break;
+            case 'price_high':
+              $q->orderBy('price', 'desc');
+              break;
+          }
+        }, fn($q) => $q->orderBy('start_datetime', 'asc')
+      )->when(
+        $filters['priceFrom'] ?? false,
+        fn($query, $value) => $query->where('price', '>=', $value)
+      )->when(
+        $filters['priceTo'] ?? false,
+        fn($query, $value) => $query->where('price', '<=', $value)
+      )->when(
+        $filters['capacity'] ?? false,
+        fn($query, $value) => $query->where('capacity', '>=', $value)
+      )->when(
+        $filters['freeOnly'] ?? false,
+        fn($q) => $q->where('price', 0)
+      )->when(
+        $filters['dateFrom'] ?? false,
+        fn($q, $value) => $q->whereDate('start_datetime', '>=', $value)
+      )
+      ->when(
+        $filters['dateTo'] ?? false,
+        fn($q, $value) => $q->whereDate('start_datetime', '<=', $value)
+      )->when(
+        $filters['deleted'] ?? false,
+        fn($query, $value) => $query->withTrashed()
+      )->when(
+        $filters['by'] ?? false,
+        function ($q, $value) use ($filters) {
+          if (!in_array($value, $this->sortable)) {
+            return $q;
+          }
+          return $q->orderBy(
+            $value,
+            $filters['order'] ?? 'desc'
+          );
+        },
+        fn($q) => $q->latest()
+      );
+  }
 }

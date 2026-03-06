@@ -3,7 +3,7 @@
     <p class="font-bold">{{ available }}</p> Seats
 
     <p v-if="available != 0" class="flex text-red-500">
-      - {{ available }} available
+      Available !
     </p>
     <p v-else class="flex text-red-500">
       Fully registered !

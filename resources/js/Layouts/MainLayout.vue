@@ -20,13 +20,14 @@ interface AppPageProps extends InertiaPageProps {
 const props = defineProps<{ notificationsBell: Notification[] }>()
 
 const page = usePage<AppPageProps>();
+const routeDifferentiate = page.props.routeDifferentiate
 const flashSuccess = computed(() => page.props.flash.success)
 const flashError = computed(() => page.props.flash.error)
 const user = computed(() => page.props.auth.user)
 const notificationCount = computed(
-  () => Math.min(page.props.auth.user.notificationCount, 9),
+  () => Math.min(page.props.auth.user?.notificationCount, 9),
 )
-const notifications = computed(() => page.props.auth.user.notificationsBell)
+const notifications = computed(() => page.props.auth.user?.notificationsBell || [])
 const showNotification = ref(false)
 
 const openNotifications = () => {
@@ -57,15 +58,15 @@ const openNotifications = () => {
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                                <NavLink
+                                <NavLink v-if="user"
                                     :href="route('attendee.dashboard')"
                                     :active="route().current('attendee.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('attendee.event.index')"
-                                    :active="route().current('attendee.event.index') || route().current('attendee.event.show') || route().current('event.registration.index')"
+                                    :href="route(routeDifferentiate)"
+                                    :active="route().current(routeDifferentiate) || route().current('attendee.event.show') || route().current('event.registration.index')"
                                 >
                                     Event
                                 </NavLink>
@@ -86,11 +87,11 @@ const openNotifications = () => {
                                   </button>
                                 <NotificationDropdown :notifications="notifications.data ?? notifications" :show="showNotification" :notification-count="notificationCount"/>
 
-                                <Dropdown align="right" width="48">
+                                <Dropdown v-if="user" align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none">
-                                                {{ $page.props.auth.user.name }} 
+                                                {{ $page.props.auth.user?.name }} 
 
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
@@ -123,6 +124,10 @@ const openNotifications = () => {
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
+
+                                <NavLink v-else :href="route('home')">
+                                    Go Back
+                                </NavLink>
                             </div>
                         </div>
 
@@ -178,15 +183,15 @@ const openNotifications = () => {
                     class="sm:hidden"
                 >
                     <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
+                        <ResponsiveNavLink v-if="user"
                             :href="route('attendee.dashboard')"
                             :active="route().current('attendee.dashboard')"
                         >
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                            :href="route('attendee.event.index')"
-                            :active="route().current('attendee.event.index') || route().current('attendee.event.show') || route().current('event.registration.index')"
+                            :href="route(routeDifferentiate)"
+                            :active="route().current(routeDifferentiate) || route().current('attendee.event.show') || route().current('event.registration.index')"
                           >
                             Event
                         </ResponsiveNavLink>
@@ -200,14 +205,14 @@ const openNotifications = () => {
                             <div
                                 class="text-base font-medium text-gray-800"
                             >
-                                {{ $page.props.auth.user.name }}
+                                {{ $page.props.auth.user?.name }}
                             </div>
                             <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
+                                {{ $page.props.auth.user?.email }}
                             </div>
                         </div>
 
-                        <div class="mt-3 space-y-1">
+                        <div v-if="user" class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')">
                                 Profile
                             </ResponsiveNavLink>
@@ -218,6 +223,11 @@ const openNotifications = () => {
                             >
                                 Log Out
                             </ResponsiveNavLink>
+                        </div>
+                        <div v-else>
+                          <ResponsiveNavLink :href="route('home')">
+                              Go Back
+                          </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>

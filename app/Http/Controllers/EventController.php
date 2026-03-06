@@ -154,7 +154,7 @@ class EventController extends Controller
         ]);
       }
 
-      $event = $event->update($request->validate([
+      $event->update($request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string|max:255',
         'location' => 'required|string|max:255',
