@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -57,5 +58,15 @@ class EventImageController extends Controller
       $image->delete();
 
       return redirect()->back()->with('success', 'Image was deleted!');
+    }
+
+    public function update(event $event, EventImage $image)
+    {
+      DB::transaction(function() use ($event, $image) {
+        $event->images()->update(['is_cover' => false]);
+        $image->update(['is_cover' => true]);
+      });
+
+      return back()->with('success', 'Cover image updated.');
     }
 }

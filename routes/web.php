@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendeeController;
 
 use App\Http\Controllers\EventController;
@@ -50,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->except(['index','show']);
 
   Route::resource('event.image', EventImageController::class)
-    ->only(['create', 'store', 'destroy']);
+    ->only(['create', 'store', 'destroy','update']);
 
   Route::get('event/{event}/registrations', [EventRegistrationController::class, 'index'])->name('event.registration.index');
   Route::prefix('event/registration')->group(function () {
@@ -81,9 +85,18 @@ Route::middleware(['auth', 'verified', 'role:admin'])
   ->prefix('admin')
   ->name('admin.')
   ->group(function () {
-    Route::get('/dashboard', function () {
-      return Inertia::render('Admin/Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/event', [AdminEventController::class, 'index'])->name('event.index');
+    Route::get('/event/{event}', [AdminEventController::class, 'show'])->name('event.show');
+
+    Route::patch('/event/{event}/cancel', [AdminEventController::class, 'cancel'])->name('event.cancel');
+    Route::delete('/event/{event}', [AdminEventController::class, 'destroy'])->name('event.destroy');
+    
+
+    Route::get('user', [UserController::class, 'index'])->name('user.index');
+    Route::post('user/{user}/toggle', [UserController::class, 'toggleStatus'])->name('user.toggle');
+    Route::resource('registration', AdminRegistrationController::class)
+      ->only(['index']);
   });
 
 /*

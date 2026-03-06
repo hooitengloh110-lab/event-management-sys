@@ -19,7 +19,10 @@ interface AppPageProps extends InertiaPageProps {
 const props = defineProps<{ notificationsBell: Notification[] }>()
 
 const page = usePage<AppPageProps>();
+const routeDifferentiate = page.props.routeDifferentiate
+const role = page.props.auth.user?.role
 const flashSuccess = computed(() => page.props.flash.success)
+const flashError = computed(() => page.props.flash.error)
 const user = computed(() => page.props.auth.user)
 const notificationCount = computed(
   () => Math.min(page.props.auth.user.notificationCount, 9),
@@ -55,16 +58,28 @@ const openNotifications = () => {
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('organiser.dashboard')"
-                                    :active="route().current('organiser.dashboard')"
+                                    :href="role == 'organiser' ? route('organiser.dashboard') : route('admin.dashboard')"
+                                    :active="route().current(role == 'organiser' ? 'organiser.dashboard' : 'admin.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('event.index')"
-                                    :active="route().current('event.index') || route().current('event.show') || route().current('event.image.create') || route().current('event.registration.index')"
+                                    :href="role== 'organiser' ? route('event.index') : route('admin.event.index')"
+                                    :active="route().current(role == 'organiser' ? 'event.index' : 'admin.event.index') || route().current('event.show') || route().current('event.image.create') || route().current('event.registration.index')"
                                 >
                                     Event
+                                </NavLink>
+                                <NavLink v-if="role == 'admin'"
+                                    :href="route('admin.user.index')"
+                                    :active="route().current('admin.user.index')"
+                                >
+                                    User
+                                </NavLink>
+                                <NavLink v-if="role == 'admin'"
+                                    :href="route('admin.registration.index')"
+                                    :active="route().current('admin.registration.index')"
+                                >
+                                    Registration
                                 </NavLink>
                             </div>
                         </div>
@@ -176,8 +191,8 @@ const openNotifications = () => {
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('organiser.dashboard')"
-                            :active="route().current('organiser.dashboard')"
+                            :href="role == 'organiser' ? route('organiser.dashboard') : route('admin.dashboard')"
+                            :active="route().current(role == 'organiser' ? 'organiser.dashboard' : 'admin.dashboard')"
                         >
                             Dashboard
                         </ResponsiveNavLink>
@@ -234,6 +249,9 @@ const openNotifications = () => {
             <main class="container mx-auto p-4 w-full pt-6">
                 <div v-if="flashSuccess" class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2">
                 {{ flashSuccess }}
+                </div>
+                <div v-if="flashError" class="mb-4 border rounded-md shadow-sm border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 p-2 text-red-800">
+                  {{ flashError }}
                 </div>
                 <slot> Default </slot>
             </main>

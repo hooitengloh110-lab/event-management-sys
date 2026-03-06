@@ -100,6 +100,9 @@ class Event extends Model
       })->when($filters['category'] ?? false,
             fn($q, $value) => $q->where('category', 'like', "%{$value}%")
       )->when(
+        $filters['organiser'] ?? false,
+        fn($query, $value) => $query->where('organiser_id', $value)
+      )->when(
         $filters['priceFrom'] ?? false,
         fn($query, $value) => $query->where('price', '>=', $value)
       )->when(

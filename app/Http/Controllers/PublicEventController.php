@@ -32,9 +32,13 @@ class PublicEventController extends Controller
     $events = Event::query()
       ->where('status', 'published')
       ->where('start_datetime', '>=', now())
-      ->with(['organiser:id,name','images'])
+      ->with(['organiser:id,name',
+        'images' => function ($query) {
+            $query->where('is_cover', true);
+        }
+      ])
       ->withCount(['registrations' => function ($query) {
-        $query->where('status', 'confirmed');
+        $query->where('status', '!=', 'cancelled');
       }])
       ->PublicFilter($filters)->paginate(10)->withQueryString();
 

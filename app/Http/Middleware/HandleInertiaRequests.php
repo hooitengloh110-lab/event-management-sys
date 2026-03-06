@@ -53,8 +53,13 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
-            'routeDifferentiate' => $request->user() && $request->user()->role === 'attendee'
-                ? 'attendee.event.index'
+            'routeDifferentiate' => $request->user()
+                ? match($request->user()->role) {
+                    'attendee'  => 'attendee.event.index',
+                    'organiser' => 'organiser.event.index',
+                    'admin'     => 'admin.event.index',
+                    default     => 'public.event.index',
+                }
                 : 'public.event.index',
         ];
     }

@@ -11,7 +11,7 @@ class EventImage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['filename'];
+    protected $fillable = ['filename','is_cover'];
     protected $appends = ['src'];
 
     public function event(): BelongsTo

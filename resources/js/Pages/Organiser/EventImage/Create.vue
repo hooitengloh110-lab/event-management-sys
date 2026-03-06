@@ -41,10 +41,23 @@
           :href="route('event.image.destroy', { event: props.event.id, image: image.id })"
           method="delete"
           as="button"
-          class="mt-2 btn-outline text-xs"
+          class="mt-2 btn-outline text-xs mb-2"
         >
           Delete
         </Link>
+        <ConfirmDialog v-if="!image.deleted_at && !image.is_cover" title="Update Cover Image?"
+          description="Are you sure? This only can choose one image as Cover." :onConfirm="() => updateCover(event.id, image.id)">
+          <template #trigger>
+            <Button variant="outline" class="btn-color">
+              {{ image.is_cover ? 'Cover Image' : 'Set As Cover' }}
+            </Button>
+          </template>
+        </ConfirmDialog>
+        <span v-else-if="image.is_cover"
+          class="text-white bg-green-600 px-2 py-2 rounded text-xs text-center"
+        >
+          Cover Image
+        </span>
       </div>
     </section>
   </Box>
@@ -52,9 +65,11 @@
 
 <script setup >
 import { computed } from 'vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, router, useForm } from '@inertiajs/vue3'
 import Box from '@/Components/Display/Box.vue'
 import DashboardLayout from '@/Layouts/DashboardLayout.vue'
+import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue'
+import { Button } from '@/components/ui/button'
 
 defineOptions({
   layout: DashboardLayout
@@ -86,4 +101,10 @@ const addFiles = (event) => {
 }
 
 const reset = () => form.reset('images')
+
+const updateCover = (eventId,imageId) => {
+  router.patch(route('event.image.update', { event: eventId, image: imageId }))
+}
+
+
 </script>
