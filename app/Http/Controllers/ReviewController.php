@@ -79,28 +79,4 @@ class ReviewController extends Controller
   {
     return Inertia::render('Attendee/Review/Show', ['event' => $event, 'review' => $review]);
   }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(Review $review)
-  {
-    //
-  }
-
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(Request $request, Review $review)
-  {
-    //
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(Review $review)
-  {
-    //
-  }
 }

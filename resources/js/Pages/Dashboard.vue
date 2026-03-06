@@ -29,14 +29,3 @@ import { Head } from '@inertiajs/vue3';
     </AuthenticatedLayout>
 </template>
 
-
-<!-- <script setup lang="ts">
-import { Button } from '@/Components/ui/button'
-</script>
-
-<template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-    <Button >Click Me</Button>
-  </div>
-</template> -->
