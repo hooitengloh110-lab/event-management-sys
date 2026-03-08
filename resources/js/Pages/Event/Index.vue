@@ -1,4 +1,5 @@
 <template>
+  <Head title="Event" />
   <div class="flex items-start gap-6">
     <h1 class="text-3xl mb-4">Your Events</h1>
     <button type="button" @click="showFilters = !showFilters"
@@ -84,7 +85,7 @@ import Pagination from '@/Components/Display/Pagination.vue';
 import Price from '@/Components/Display/Price.vue';
 import StatusBadge from '@/Components/Display/StatusBadge.vue';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { useDateFormat } from '@/useFormatDate.js'
 import OrganiserEventFilter from '@/Components/Display/OrganiserEventFilter.vue';
 import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/Components/ui/table'
 
@@ -47,6 +47,7 @@ const statusClass = (status) => {
 </script>
 
 <template>
+  <Head title="Event Registration" />
   <Table v-if="registrations.data.length" class="mt-6">
     <TableHeader>
       <TableRow>

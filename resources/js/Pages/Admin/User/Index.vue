@@ -1,6 +1,6 @@
 <template>
+  <Head title="User" />
   <div class="flex flex-col gap-6 w-full">
-    <!-- Filter Box -->
     <Box>
       <template #header>
         Filter Users
@@ -13,7 +13,6 @@
       </div>
     </Box>
 
-    <!-- Users List Box -->
     <Box v-if="users.data.length">
       <template #header>
         Users
@@ -65,7 +64,7 @@
 
 <script setup>
 import { reactive, ref, watch } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import Box from '@/Components/Display/Box.vue';
 import Pagination from '@/Components/Display/Pagination.vue';

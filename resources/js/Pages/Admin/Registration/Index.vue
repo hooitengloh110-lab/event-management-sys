@@ -1,10 +1,10 @@
 <template>
+  <Head title="Event Registration" />
   <Box>
     <template #header>
       Registration Management
     </template>
 
-    <!-- Filters -->
     <div class="flex flex-wrap gap-3 mt-4">
       <select v-model="filterForm.event" @change="applyFilter" class="input-filter w-40">
         <option value="">All Events</option>
@@ -24,7 +24,6 @@
       </select>
     </div>
 
-    <!-- Registrations Table -->
     <div class="overflow-x-auto mt-4">
       <table class="w-full text-left table-auto border border-gray-200">
         <thead class="bg-gray-100">
@@ -67,7 +66,7 @@
 <script setup>
 
 import { ref, computed, watch, reactive } from 'vue'
-import { Link, router } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Display/Pagination.vue'
 import { debounce } from 'lodash'
 import Box from '@/Components/Display/Box.vue'

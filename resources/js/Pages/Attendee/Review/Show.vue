@@ -1,16 +1,14 @@
 <template>
+  <Head title="Review" />
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Header -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">My Reviews</h1>
       <p class="text-gray-600 dark:text-gray-400 mt-2">View and manage your event reviews</p>
     </div>
 
-    <!-- Reviews List -->
     <div v-if="review && review" class="space-y-6">
       <Card class="overflow-hidden">
         <CardContent class="p-0">
-          <!-- Event Info Header -->
           <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 p-6">
             <div class="flex items-start justify-between">
               <div class="flex-1">
@@ -24,7 +22,6 @@
                 </p>
               </div>
               
-              <!-- Star Rating Display -->
               <div class="flex items-center gap-1 bg-white dark:bg-gray-800 px-3 py-2 rounded-lg shadow-sm">
                 <Star 
                   v-for="i in 5" 
@@ -37,7 +34,6 @@
             </div>
           </div>
 
-          <!-- Review Content -->
           <div class="p-6">
             <div class="flex items-start gap-4">
               <div class="flex-shrink-0">
@@ -60,7 +56,6 @@
                   No comment provided
                 </p>
 
-                <!-- Actions -->
                 <div class="flex items-center gap-3 mt-4">
                   <Button 
                     variant="outline" 
@@ -86,7 +81,6 @@
       </Card>
     </div>
 
-    <!-- Pagination -->
     <div v-if="reviews && reviews.length" class="mt-8">
       <Pagination :links="pagination.links" />
     </div>
@@ -97,7 +91,7 @@
 import Pagination from '@/Components/Display/Pagination.vue';
 import { Card, CardContent } from '@/Components/ui/card';
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { router } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 
 interface Review {
   id: number

@@ -17,6 +17,7 @@ interface AppPageProps extends InertiaPageProps {
 }
 const page = usePage<AppPageProps>();
 const flashSuccess = computed(() => page.props.flash.success)
+const role = page.props.auth.user?.role
 
 </script>
 
@@ -36,9 +37,9 @@ const flashSuccess = computed(() => page.props.flash.success)
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="$page.props.auth.user.role === 'organiser' ? route('organiser.dashboard') : route('attendee.dashboard')"
+                                    :href="role === 'organiser' ? route('organiser.dashboard') : role === 'admin' ? route('admin.dashboard') : route('attendee.dashboard')"
                                     
-                                    :active="$page.props.auth.user.role === 'organiser' ? route().current('organiser.dashboard') : route().current('attendee.dashboard')"
+                                    :active="role === 'organiser' ? route().current('organiser.dashboard') : role === 'admin' ? route().current('admin.dashboard') : route().current('attendee.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -143,8 +144,8 @@ const flashSuccess = computed(() => page.props.flash.success)
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="$page.props.auth.user.role === 'organiser' ? route('organiser.dashboard') : route('attendee.dashboard')"
-                            :active="$page.props.auth.user.role === 'organiser' ? route().current('organiser.dashboard') : route().current('attendee.dashboard')"
+                            :href="role === 'organiser' ? route('organiser.dashboard') : role === 'admin' ? route('admin.dashboard') : route('attendee.dashboard')"
+                            :active="role === 'organiser' ? route().current('organiser.dashboard') : role === 'admin' ? route().current('admin.dashboard') : route().current('attendee.dashboard')"
 
                         >
                             Dashboard

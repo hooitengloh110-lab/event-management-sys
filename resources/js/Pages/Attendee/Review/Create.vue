@@ -1,4 +1,5 @@
 <template>
+  <Head title="Review" />
   <div class="max-w-xl mx-auto">
     <Box class="p-8">
     <h1 class="text-xl font-semibold mb-4">
@@ -38,7 +39,7 @@ import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Button from '@/components/ui/button/Button.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
   event: Object

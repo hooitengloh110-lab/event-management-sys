@@ -1,4 +1,5 @@
 <template>
+  <Head title="Review" />
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">All Reviews</h1>
@@ -64,7 +65,6 @@
       </CardContent>
     </Card>
 
-    <!-- Pagination -->
     <div v-if="reviews && reviews.length" class="mt-8">
       <Pagination :links="reviews.links" />
     </div>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import { Card, CardContent } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import Pagination from '@/Components/Display/Pagination.vue'

@@ -58,7 +58,7 @@ const openNotifications = () => {
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="role == 'organiser' ? route('organiser.dashboard') : route('admin.dashboard')"
+                                    :href="role === 'organiser' ? route('organiser.dashboard') : route('admin.dashboard')"
                                     :active="route().current(role == 'organiser' ? 'organiser.dashboard' : 'admin.dashboard')"
                                 >
                                     Dashboard

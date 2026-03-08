@@ -1,4 +1,5 @@
 <template>
+  <Head title="Event" />
   <Box>
     <template #header>Upload New Images</template>
     <form @submit.prevent="upload">
@@ -65,7 +66,7 @@
 
 <script setup >
 import { computed } from 'vue'
-import { Link, router, useForm } from '@inertiajs/vue3'
+import { Head, Link, router, useForm } from '@inertiajs/vue3'
 import Box from '@/Components/Display/Box.vue'
 import DashboardLayout from '@/Layouts/DashboardLayout.vue'
 import ConfirmDialog from '@/Components/Display/ConfirmDialog.vue'

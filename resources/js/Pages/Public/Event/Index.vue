@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, reactive, watch } from 'vue'
-import { Link, router, usePage } from '@inertiajs/vue3'
+import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
@@ -134,8 +134,8 @@ defineOptions({
 </script>
 
 <template>
+  <Head title="Event" />
   <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
     <div class="bg-gradient-to-r from-gray-600 to-indigo-100 text-white py-12 rounded-tl-lg rounded-tr-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-4xl font-bold mb-2">Discover Events</h1>
@@ -143,12 +143,10 @@ defineOptions({
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
       <Card class="shadow-lg">
         <CardContent class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <!-- Search -->
             <div class="lg:col-span-2">
               <div class="relative">
                 <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -160,7 +158,6 @@ defineOptions({
               </div>
             </div>
 
-            <!-- Category -->
             <Select v-model="filterForm.category" >
               <SelectTrigger>
                 <SelectValue placeholder="Category" />
@@ -173,7 +170,6 @@ defineOptions({
               </SelectContent>
             </Select>
 
-            <!-- Price -->
             <Select v-model="filterForm.price" >
               <SelectTrigger>
                 <SelectValue placeholder="Price" />
@@ -185,7 +181,6 @@ defineOptions({
               </SelectContent>
             </Select>
 
-            <!-- Date -->
             <Select v-model="filterForm.date">
               <SelectTrigger>
                 <SelectValue placeholder="Date" />
@@ -200,7 +195,6 @@ defineOptions({
             </Select>
           </div>
 
-          <!-- Sort and Clear -->
           <div class="flex items-center justify-between mt-4 pt-4 border-t">
             <div class="flex items-center gap-2">
               <span class="text-sm text-gray-600">Sort by:</span>
@@ -231,7 +225,6 @@ defineOptions({
       </Card>
     </div>
 
-    <!-- Events Grid -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div v-if="events.data.length" class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-6">
         <Card
@@ -307,7 +300,6 @@ defineOptions({
         </Card>
       </div>
 
-      <!-- Empty State -->
       <Card v-else class="border-dashed">
         <CardContent class="py-16 text-center">
           <Search class="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -319,7 +311,6 @@ defineOptions({
         </CardContent>
       </Card>
 
-      <!-- Pagination -->
       <div v-if="events.data.length" class="mt-8">
         <Pagination :links="events.links" />
       </div>
