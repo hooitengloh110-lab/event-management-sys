@@ -1,4 +1,5 @@
 <template>
+  <Head title="Event" />
   <div class="space-y-6 max-w-3xl mx-auto p-6 border rounded-lg px-8 py-8">
     <h1 class="text-2xl font-bold">Edit Event</h1>
     
@@ -51,7 +52,7 @@
           <InputError class="mt-2" :message="form.errors.price" />
         </div>
 
-        <div class="grid col-span-3">
+        <div v-if="event.status != 'cancelled'" class="grid col-span-3">
           <InputLabel for="status" value="Status" />
           <SingleSelect label="Status" v-model="form.status" :options="statusOptions"  />
         </div>
@@ -85,7 +86,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue'
 import Button from '@/Components/ui/button/Button.vue'
 import SingleSelect from '@/Components/SingleSelect.vue'
 import Textarea from '@/Components/ui/textarea/Textarea.vue'
-import { useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import TextInput from '@/Components/TextInput.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
@@ -99,15 +100,16 @@ const props = defineProps({
 })
 
 const categoryOptions = [
-    { label: "Technology", value: "technology" },
-    { label: "Business", value: "business" },
-    { label: "Sports", value: "sports" },
-    { label: "Education", value: "education" },
-    { label: "Music", value: "music" },
+    { label: "Technology", value: "Technology" },
+    { label: "Business", value: "Business" },
+    { label: "Sports", value: "Sports" },
+    { label: "Education", value: "Education" },
+    { label: "Music", value: "Music" },
 ]
 
 const statusOptions = [
     { label: "Draft", value: "draft" },
+    { label: "Cancelled", value: "cancelled" },
     { label: "Published", value: "published" },
 ]
 
